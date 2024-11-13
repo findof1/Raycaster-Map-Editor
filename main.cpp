@@ -39,6 +39,8 @@ int main()
     }
 
     bool running = true;
+        float width = 700 / mapWidth;
+        float height = 700 / mapHeight;
     while (running)
     {
 
@@ -49,13 +51,19 @@ int main()
             {
                 running = false;
             }
+             if (event.type == SDL_MOUSEBUTTONDOWN)
+            {
+                int x = event.button.x
+                int y = event.button.y
+                int cellX = floor(x / width);
+                int cellY = floor(y / height);
+            }
         }
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        float width = 700 / mapWidth;
-        float height = 700 / mapHeight;
+    
         for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
