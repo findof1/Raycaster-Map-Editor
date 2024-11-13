@@ -4,10 +4,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <vector>
 int mapWidth;
 int mapHeight;
+int cellType = 1;
 int main()
 {
+    std::vector<int> map;
     std::cout << "Enter the width of the map: ";
     std::cin >> mapWidth;
     std::cout << std::endl;
@@ -39,8 +42,8 @@ int main()
     }
 
     bool running = true;
-        float width = 700 / mapWidth;
-        float height = 700 / mapHeight;
+    float width = 700 / mapWidth;
+    float height = 700 / mapHeight;
     while (running)
     {
 
@@ -57,6 +60,7 @@ int main()
                 int y = event.button.y
                 int cellX = floor(x / width);
                 int cellY = floor(y / height);
+                map[cellX + cellY*mapWidth] = cellType;
             }
         }
 
@@ -73,7 +77,27 @@ int main()
                 square.h = height - 1;
                 square.x = x * width + 1;
                 square.y = y * height + 1;
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                switch(cellType){
+                    case 0:
+                    SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
+                    break;
+                    case 1:
+                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                    break;
+                    case 2:
+                    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+                    case 3:
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+                    case 4:
+                    SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+                    case 5:
+                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                    case 6:
+                    SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+                    case 7:
+                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                    break;
+                }
                 SDL_RenderDrawRectF(renderer, &square);
             }
         }
@@ -86,6 +110,17 @@ int main()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+    for(int i = 0; i < mapWidth; i++){
+        for(int j = 0; j < mapHeight; j++){
+            std::cout << map[i + j * mapWidth] << ",";
+        }
+        std::endl;
+    }
+
+    std::cin.get();
+    std::cin.get();
+    std::cin.get();
 
     return 0;
 }
