@@ -149,39 +149,13 @@ enum SpriteType
     ShooterEnemy,
     Bullet,
     EnemyBullet,
-    Coin
+    Coin,
+    HammerEnemy,
+    Spike,
+    DroneEnemy,
+    GoldBar,
+    SwatBoss
 };
-
-void printSpriteType(SpriteType type)
-{
-    switch (type)
-    {
-    case Key:
-        std::cout << "Key" << std::endl;
-        break;
-    case Bomb:
-        std::cout << "Bomb" << std::endl;
-        break;
-    case Enemy:
-        std::cout << "Enemy" << std::endl;
-        break;
-    case ShooterEnemy:
-        std::cout << "ShooterEnemy" << std::endl;
-        break;
-    case Bullet:
-        std::cout << "Bullet" << std::endl;
-        break;
-    case EnemyBullet:
-        std::cout << "EnemyBullet" << std::endl;
-        break;
-    case Coin:
-        std::cout << "Coin" << std::endl;
-        break;
-    default:
-        std::cout << "Unknown SpriteType" << std::endl;
-        break;
-    }
-}
 
 struct Sprite
 {
@@ -193,7 +167,6 @@ struct Sprite
     bool active;
     std::optional<float> direction;
     std::optional<float> health;
-    std::optional<std::chrono::_V2::system_clock::time_point> enemyLastBulletTime;
 };
 
 int mapWidth;
@@ -222,6 +195,12 @@ std::vector<std::string> texturePaths = {
     "./textures/crackedBlueBrickWall.png",
     "./textures/carpet.png",
     "./textures/tiledCeiling.png",
+    "./textures/metalPlate.png",
+    "./textures/marble.png",
+    "./textures/exit.png",
+    "./textures/spikeTrap.png",
+    "./textures/stairs.png",
+    "./textures/safeDoorBoss.png",
 };
 std::vector<std::string> spritePaths = {
     "./textures/key.png",
@@ -231,6 +210,11 @@ std::vector<std::string> spritePaths = {
     "./textures/bullet.png",
     "./textures/bullet.png",
     "./textures/coin.png",
+    "./textures/hammerEnemy.png",
+    "./textures/spike.png",
+    "./textures/drone.png",
+    "./textures/goldBar.png",
+    "./textures/swat.png",
 };
 
 void serialize(int mapWidth, int mapHeight, const std::vector<int> &map, const std::vector<int> &mapFloors, const std::vector<int> &mapCeiling, const std::string &filename)
@@ -618,13 +602,9 @@ int main()
                 SDL_Keycode key = event.key.keysym.sym;
                 if (key == SDLK_p)
                 {
-                    if (selected == 0)
+                    selected++;
+                    if (selected > 2)
                     {
-                        selected = 1;
-                    }
-                    else
-                    {
-
                         selected = 0;
                     }
                 }
@@ -647,7 +627,7 @@ int main()
                         }
                     }
                 }
-                else
+                else if (cellType <= static_cast<int>(SpriteType::SwatBoss) + 1)
                 {
                     int x = event.button.x;
                     int y = event.button.y;
@@ -707,7 +687,7 @@ int main()
                 cellType = 9;
             }
         }
-        else
+        else if (selected == 1)
         {
             if (keystate[SDL_SCANCODE_0])
             {
@@ -732,6 +712,37 @@ int main()
             if (keystate[SDL_SCANCODE_5])
             {
                 cellType = 14;
+            }
+            if (keystate[SDL_SCANCODE_6])
+            {
+                cellType = 15;
+            }
+            if (keystate[SDL_SCANCODE_7])
+            {
+                cellType = 16;
+            }
+            if (keystate[SDL_SCANCODE_8])
+            {
+                cellType = 17;
+            }
+            if (keystate[SDL_SCANCODE_9])
+            {
+                cellType = 18;
+            }
+        }
+        else if (selected == 2)
+        {
+            if (keystate[SDL_SCANCODE_0])
+            {
+                cellType = 0;
+            }
+            if (keystate[SDL_SCANCODE_1])
+            {
+                cellType = 19;
+            }
+            if (keystate[SDL_SCANCODE_2])
+            {
+                cellType = 20;
             }
         }
         if (keystate[SDL_SCANCODE_Q])
